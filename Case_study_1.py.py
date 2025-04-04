@@ -1,6 +1,8 @@
+# Using Support Vector Machine (SVM) model.
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC  # Changed from RandomForestClassifier
+from sklearn.svm import SVC  
 from sklearn.metrics import accuracy_score, classification_report
 import matplotlib.pyplot as plt
 
@@ -10,7 +12,7 @@ print(data.head())
 print("Data Info")
 print(data.info())
 
-# feature selection
+
 features = ["temperature", "voltage", "current", "days_since_maintenance"]
 target = "failure"
 
@@ -29,7 +31,7 @@ if x.isnull().sum().sum() > 0 or y.isnull().sum() > 0:
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-# Changed to SVM with probability=True to enable predict_proba
+
 model = SVC(kernel='rbf', probability=True, random_state=42)
 model.fit(x_train, y_train)
 
@@ -41,7 +43,6 @@ print(f"Model accuracy = {accuracy:.2f}")
 print(f"Classification report : ")
 print(classification_report(y_test, y_pred))
 
-# For SVM, we can use feature importance from permutation importance as direct feature_importances_ isn't available
 from sklearn.inspection import permutation_importance
 perm_importance = permutation_importance(model, x_test, y_test, n_repeats=10, random_state=42)
 feature_importance = pd.Series(perm_importance.importances_mean, index=features)
